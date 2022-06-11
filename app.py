@@ -11,14 +11,8 @@ if __name__ == "__main__":
     app.run(threaded=True, debug=False, use_evalex=False)
 
 
-@app.route('/')
-def hello_world():
-    print('cheguei')
-    return 'This is my first API call!'
-
-
 @app.route('/criar_usuario', methods=['POST'])
-def teste():
+def criar_usuario():
     input_json = request.get_json(force=True)
     dicionario = {
         'nome': input_json['nome'],
