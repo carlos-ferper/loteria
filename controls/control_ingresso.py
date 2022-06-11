@@ -47,14 +47,14 @@ class ControlIngresso:
             usuario = ControlUsuario.get_usuario_by_token(token)
         except:
             usuario = None
-        status = dicionario['status']
+        status = int(dicionario['status'])
         if usuario is not None:
             filtros = [
-                User.id == usuario.id
+                Ingresso.id_usuario == usuario.id
             ]
             if status in (1, 2, 3):
                 filtros.append(Ingresso.status_ingresso == status)
             elif status != -1:
                 return False, 'Status de sorteio inválido'
-            resultados = list(dba.session.query(Ingresso).join(Ingresso.id_usuario == User.id).filter(*filtros).all())
-            return True, [x.__dict__ for x in resultados]
+            resultados = list(dba.session.query(Ingresso).filter(*filtros))
+            return True, [x.dicionario_resultado() for x in resultados]
